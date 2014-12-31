@@ -1,0 +1,21 @@
+---
+
+# Order matters with notifications
+# Put stop first
+- name: artifactory stop service
+  service:
+    name: artifactory
+    state: stopped
+
+- name: artifactory start service
+  service:
+    name: artifactory
+    state: started
+  when: artifactory_run_service | default(false)
+
+- name: artifactory restart service
+  debug: msg="restart artifactory"
+  changed_when: true
+  notify:
+    - artifactory stop service
+    - artifactory start service

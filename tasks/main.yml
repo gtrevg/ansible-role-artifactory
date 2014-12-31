@@ -1,0 +1,50 @@
+---
+
+- debug: msg="This installation is for RedHat Servers Only"
+
+- name: Asserting this machine is a RedHat machine
+  assert:
+    that: "ansible_os_family == 'RedHat'"
+
+- name:  install java openjdk
+  sudo: true
+  yum:
+    name: java-1.7.0-openjdk
+    state: present
+
+
+- debug:
+    var:  artifactory_download_url
+
+- name: "Get artifactory RPM"
+  get_url:
+    url:  "{{ artifactory_download_url }}"
+    dest: "{{ artifactory_tmp_file }}"
+
+
+- name: Install Artifactory RPM
+  sudo: true
+  yum:
+    name: "{{ artifactory_tmp_file }}"
+    state: present
+
+
+- name: Install Artifactory service file
+  sudo: true
+  command: "cp {{ artifactory_home_dir }}/misc/service/artifactory /etc/init.d/artifactory"
+
+
+- name: Create artifactory directory for logs
+  sudo: true
+  file:
+    dest: "{{ artifactory_home_dir }}/logs"  # Catalina wants to dump logs in the home directory
+    state: directory
+    owner: artifactory
+    group: artifactory
+
+- name: Artifactory installation complete
+  debug:
+    var: artifactory_run_service
+  notify:
+    - artifactory restart service
+  changed_when: true

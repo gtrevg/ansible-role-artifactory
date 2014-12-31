@@ -1,0 +1,13 @@
+---
+artifactory_run_service:      false
+
+
+artifactory_version:          3.4.2
+artifactory_file_name:        "artifactory-{{ artifactory_version }}.rpm"
+artifactory_download_server:  http://dl.bintray.com
+artifactory_download_path:    /content/jfrog/artifactory-rpms
+artifactory_download_url:     "{{ artifactory_download_server }}{{ artifactory_download_path }}/{{ artifactory_file_name }}"
+
+artifactory_tmp_file:         "/tmp/{{ artifactory_file_name }}"
+
+artifactory_home_dir:         /opt/jfrog/artifactory  # The RPM is not relocatable

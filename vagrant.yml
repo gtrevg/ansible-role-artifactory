@@ -1,0 +1,15 @@
+---
+
+- hosts: test
+
+  roles:
+    - role: '.'
+      artifactory_run_service: true
+
+  # post_tasks:
+  #   - name: Run artifactory
+  #     sudo: true
+  #     environment:
+  #       JAVA_HOME: /usr
+  #       JAVA_OPTIONS:   "-server -Xms512m -Xmx2g -Xss256k -XX:PermSize=128m -XX:MaxPermSize=256m -XX:+UseG1GC"
+  #     command: /opt/jfrog/artifactory/bin/artifactory.sh
